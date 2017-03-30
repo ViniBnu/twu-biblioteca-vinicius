@@ -1,6 +1,7 @@
 package com.twu.biblioteca;
 
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * Created by vsolive on 28/03/17.
@@ -17,9 +18,12 @@ public class Library {
         return "Welcome to Biblioteca!";
     }
 
-    public List<Book> getBooks() {
-        return books;
+    public List<Book> getAvailableBooks() {
+        return books.stream().filter(b -> b.isAvailable()).collect(Collectors.toList());
     }
 
+    public void showAllBooksAvailable() {
+        getAvailableBooks().forEach(System.out::println);
+    }
 
 }
