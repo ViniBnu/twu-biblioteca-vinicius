@@ -3,9 +3,6 @@ package com.twu.biblioteca;
 import java.util.*;
 import java.util.stream.Collectors;
 
-/**
- * Created by vsolive on 28/03/17.
- */
 public class Library {
 
     private List<Book> availableBooks;
@@ -28,17 +25,30 @@ public class Library {
         return unavailableBooks;
     }
 
-    public boolean canCheckout(String bookName) {
-        Book book = this.searchBookByName(bookName, availableBooks);
-        if( book == null || (unavailableBooks.contains(book))) {
+    public boolean canChangeStatus(String bookName, List<Book> list) {
+        Book book = searchBookByName(bookName);
+        if (book == null || list.contains(book)) {
             return false;
         }
         return true;
     }
 
-    public Book searchBookByName(String bookName, List<Book> bookList) {
+
+    public void checkinBook(String bookName) {
+        Book book = searchBookByName(bookName);
+        unavailableBooks.remove(book);
+        availableBooks.add(book);
+    }
+
+    public void checkoutBook(String name) {
+        Book book = searchBookByName(name);
+        availableBooks.remove(book);
+        unavailableBooks.add(book);
+    }
+
+    public Book searchBookByName(String bookName) {
         Book book = null;
-        for(Book b : bookList) {
+        for(Book b : getAllBooks()) {
             if (b.getName().toLowerCase().equals(bookName.toLowerCase())) {
                 book = b;
                 break;
@@ -47,25 +57,10 @@ public class Library {
         return book;
     }
 
-    public void checkoutBook(String name) {
-        Book book = searchBookByName(name, availableBooks);
-        availableBooks.remove(book);
-        unavailableBooks.add(book);
-    }
-
-
-    public boolean canCheckin(String bookName) {
-        Book book = this.searchBookByName(bookName, unavailableBooks);
-        if( book == null || (availableBooks.contains(book))) {
-            return false;
-        }
-        return true;
-    }
-
-
-    public void checkinBook(String bookName) {
-        Book book = searchBookByName(bookName, unavailableBooks);
-        unavailableBooks.remove(book);
-        availableBooks.add(book);
+    private List<Book> getAllBooks() {
+        List <Book> books = new ArrayList<Book>();
+        books.addAll(availableBooks);
+        books.addAll(unavailableBooks);
+        return books;
     }
 }

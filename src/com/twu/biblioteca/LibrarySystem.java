@@ -48,16 +48,12 @@ public class LibrarySystem {
         showUnavailableBookDetails();
         String bookName = "";
         bookName = scanner.nextLine();
-        if (library.canCheckin(bookName)) {
+        if (library.canChangeStatus(bookName, library.getAvailableBooks())) {
             library.checkinBook(bookName);
             System.out.println("Thank you for returning the book");
         } else {
             System.out.println("That book is not due");
         }
-
-
-
-
     }
 
     private void showUnavailableBookDetails() {
@@ -69,7 +65,7 @@ public class LibrarySystem {
         showAvailableBookDetails();
         String bookName = "";
         bookName = scanner.nextLine();
-        if (library.canCheckout(bookName)) {
+        if (library.canChangeStatus(bookName, library.getUnavailableBooks())) {
             library.checkoutBook(bookName);
             System.out.println("Thank you, hope you enjoy your book");
         } else {
@@ -89,7 +85,4 @@ public class LibrarySystem {
     public void showAvailableBookDetails() {
         library.getAvailableBooks().forEach(System.out::println);
     }
-
-
-
 }
