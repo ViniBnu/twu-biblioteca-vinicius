@@ -9,13 +9,11 @@ public class Book {
     private String name;
     private String author;
     private Integer releaseYear;
-    private boolean available;
 
     public Book(String name, String author, Integer releaseYear) {
         this.name = name;
         this.author = author;
         this.releaseYear = releaseYear;
-        this.available = true;
 
     }
 
@@ -40,8 +38,19 @@ public class Book {
         return releaseYear;
     }
 
-    public boolean isAvailable(){
-        return available;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Book book = (Book) o;
+
+        return name.equals(book.name);
     }
 
+    @Override
+    public int hashCode() {
+        return name.hashCode();
+    }
 }
