@@ -27,24 +27,14 @@ public class LibraryTest {
     }
 
     @Test
-    public void shouldReturnWelcomeMessage() throws Exception {
-        assertEquals("Welcome to Biblioteca!", library.getWelcomeMessage());
-    }
-
-    @Test
-    public void checkoutBookShouldTakeBookOffList() throws Exception {
+    public void checkoutBook_shouldTakeBookOffAvailableBooks() throws Exception {
         library.checkoutBook("1984");
 
         assertEquals(1, library.getAvailableBooks().size());
     }
 
     @Test
-    public void shouldReturnTrueWhenItemCanBeCheckedOut() throws Exception {
-        assertEquals(true, library.canChangeStatus("1984", library.getUnavailableBooks()));
-    }
-
-    @Test
-    public void checkinBookShouldReturnBookToAvailableList() throws Exception {
+    public void checkinBook_shouldPutReturnedBookBackToAvailableList() throws Exception {
         library.checkoutBook("1984");
         library.checkinBook("1984");
 
@@ -52,14 +42,14 @@ public class LibraryTest {
     }
 
     @Test
-    public void shouldReturnBookByNameGiven() throws Exception {
+    public void searchBookByName_shouldReturnRightBook() throws Exception {
         Book book = library.searchBookByName("1984");
 
         assertEquals(book, library.getAvailableBooks().get(0));
     }
 
     @Test
-    public void shouldReturnBookByNameGivenEvenIfUnavailable() throws Exception {
+    public void searchBookByName_returnsBookEvenIfUnavailable() throws Exception {
         library.checkoutBook("1984");
         Book book = library.searchBookByName("1984");
 
@@ -67,12 +57,12 @@ public class LibraryTest {
     }
 
     @Test
-    public void shouldReturnTrueIfBookCanBeCheckedout() throws Exception {
+    public void canChangeStatus_shouldReturnTrueWhenAskedBookIsAvailable() throws Exception {
         assertEquals(true, library.canChangeStatus("1984", library.getUnavailableBooks()));
     }
 
     @Test
-    public void canChangeShouldReturnFalseWhenTryingToCheckoutBookAlreadyOut() throws Exception {
+    public void canChangeStatus_shouldReturnFalseWhenTryingToCheckoutBookAlreadyOut() throws Exception {
         library.checkoutBook("1984");
 
         assertEquals(false, library.canChangeStatus("1984", library.getUnavailableBooks()));

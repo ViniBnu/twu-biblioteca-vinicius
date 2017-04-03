@@ -40,13 +40,12 @@ public class LibrarySystem {
 
         } while (!choice.equals("quit"));
 
-
     }
 
     private void promptforBookCheckin() {
         System.out.println("This is the list of books not available, which one would you like to return?");
         showUnavailableBookDetails();
-        String bookName = "";
+        String bookName;
         bookName = scanner.nextLine();
         if (library.canChangeStatus(bookName, library.getAvailableBooks())) {
             library.checkinBook(bookName);
@@ -56,14 +55,10 @@ public class LibrarySystem {
         }
     }
 
-    private void showUnavailableBookDetails() {
-        library.getUnavailableBooks().forEach(System.out::println);
-    }
-
     private void promptForBookCheckout() {
         System.out.println("This is the list of books available, type in the name of the book you wish to checkout");
         showAvailableBookDetails();
-        String bookName = "";
+        String bookName;
         bookName = scanner.nextLine();
         if (library.canChangeStatus(bookName, library.getUnavailableBooks())) {
             library.checkoutBook(bookName);
@@ -84,5 +79,9 @@ public class LibrarySystem {
 
     public void showAvailableBookDetails() {
         library.getAvailableBooks().forEach(System.out::println);
+    }
+
+    private void showUnavailableBookDetails() {
+        library.getUnavailableBooks().forEach(System.out::println);
     }
 }
