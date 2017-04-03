@@ -7,10 +7,12 @@ public class Library {
 
     private List<Book> availableBooks;
     private List<Book> unavailableBooks;
+    private List<Movie> availableMovies;
 
-    public Library(List<Book> books, List<Book> checkedOutBooks) {
-        this.availableBooks = books;
-        this.unavailableBooks = checkedOutBooks;
+    public Library(List<Book> availableBooks, List<Book> unavailableBooks, List<Movie> movies) {
+        this.availableBooks = availableBooks;
+        this.unavailableBooks = unavailableBooks;
+        this.availableMovies = movies;
     }
 
     public String getWelcomeMessage() {
@@ -62,5 +64,25 @@ public class Library {
         books.addAll(availableBooks);
         books.addAll(unavailableBooks);
         return books;
+    }
+
+    public List<Movie> getAvailableMovies() {
+        return availableMovies;
+    }
+
+    public void checkoutMovie(String movieName) {
+        Movie movie = searchMovieByName(movieName);
+        availableMovies.remove(movie);
+    }
+
+    private Movie searchMovieByName(String movieName) {
+        Movie movie = null;
+        for (Movie m : getAvailableMovies()) {
+            if (m.getName().equals(movieName)) {
+                movie = m;
+                break;
+            }
+        }
+        return movie;
     }
 }

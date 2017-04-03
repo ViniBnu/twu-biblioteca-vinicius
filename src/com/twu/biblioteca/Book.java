@@ -9,11 +9,13 @@ public class Book {
     private String name;
     private String author;
     private Integer releaseYear;
+    private User currentHolder;
 
     public Book(String name, String author, Integer releaseYear) {
         this.name = name;
         this.author = author;
         this.releaseYear = releaseYear;
+        currentHolder = null;
 
     }
 
@@ -53,4 +55,17 @@ public class Book {
     public int hashCode() {
         return name.hashCode();
     }
+
+    public User getCurrentHolder() {
+        return currentHolder;
+    }
+
+    public void returnBook() {
+        this.currentHolder = null;
+    }
+    public void checkoutBook(User user) {
+        this.currentHolder = user;
+    }
+
+
 }

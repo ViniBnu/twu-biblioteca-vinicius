@@ -22,7 +22,9 @@ public class LibraryTest {
         List<Book> availableBooks = new ArrayList<>();
         availableBooks.add(new Book("1984", "Orwell", 1949));
         availableBooks.add( new Book("Hobbit", "Tolkien", 1949));
-        library = new Library(availableBooks, new ArrayList<>());
+        List<Movie> movies = new ArrayList<>();
+        movies.add(new Movie("Rocky", "Avildsen", 1979, 10));
+        library = new Library(availableBooks, new ArrayList<>(), movies);
 
     }
 
@@ -68,5 +70,15 @@ public class LibraryTest {
         assertEquals(false, library.canChangeStatus("1984", library.getUnavailableBooks()));
     }
 
+    @Test
+    public void getAvailableMovies_shouldReturnListOfAvailableMovies() throws Exception {
+        assertEquals(1, library.getAvailableMovies().size());
+    }
 
+    @Test
+    public void checkoutMovie_shouldTakeMovieOutOfAvailableList() throws Exception {
+        library.checkoutMovie("Rocky");
+
+        assertEquals(0, library.getAvailableMovies().size());
+    }
 }

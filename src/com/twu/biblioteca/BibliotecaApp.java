@@ -13,8 +13,10 @@ public class BibliotecaApp {
         List<Book> availableBooks = new ArrayList<>();
         availableBooks.add(new Book("1984", "Orwell", 1949));
         availableBooks.add( new Book("Hobbit", "Tolkien", 1949));
+        List<Movie> movies = new ArrayList<>();
+        movies.add(new Movie("Rocky", "Avildsen", 1979, 10));
 
-        Library library = new Library(availableBooks, new ArrayList<>());
+        Library library = new Library(availableBooks, new ArrayList<>(), movies);
         LibrarySystem system = new LibrarySystem(library);
 
 
