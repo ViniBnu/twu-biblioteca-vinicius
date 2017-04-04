@@ -16,6 +16,7 @@ public class LibraryTest {
 
     Library library;
     LibrarySystem system;
+    User user;
 
     @Before
     public void setUp() throws Exception {
@@ -24,6 +25,7 @@ public class LibraryTest {
         availableBooks.add( new Book("Hobbit", "Tolkien", 1949));
         List<Movie> movies = new ArrayList<>();
         movies.add(new Movie("Rocky", "Avildsen", 1979, 10));
+        user = new User("vini","vini.bnu@gmail.com","99581533","444-4444","1234");
 
         library = new Library(availableBooks, new ArrayList<>(), movies);
 
@@ -31,15 +33,15 @@ public class LibraryTest {
 
     @Test
     public void checkoutBook_shouldTakeBookOffAvailableBooks() throws Exception {
-        library.checkoutBook("1984");
+        library.checkoutBook("1984", user);
 
         assertEquals(1, library.getAvailableBooks().size());
     }
 
     @Test
     public void checkinBook_shouldPutReturnedBookBackToAvailableList() throws Exception {
-        library.checkoutBook("1984");
-        library.checkinBook("1984");
+        library.checkoutBook("1984",user);
+        library.checkinBook("1984",user);
 
         assertEquals(0, library.getUnavailableBooks().size());
     }
@@ -53,7 +55,7 @@ public class LibraryTest {
 
     @Test
     public void searchBookByName_returnsBookEvenIfUnavailable() throws Exception {
-        library.checkoutBook("1984");
+        library.checkoutBook("1984",user);
         Book book = library.searchBookByName("1984");
 
         assertEquals(book,library.getUnavailableBooks().get(0));
@@ -66,7 +68,7 @@ public class LibraryTest {
 
     @Test
     public void canChangeStatus_shouldReturnFalseWhenTryingToCheckoutBookAlreadyOut() throws Exception {
-        library.checkoutBook("1984");
+        library.checkoutBook("1984", user);
 
         assertEquals(false, library.canChangeStatus("1984", library.getUnavailableBooks()));
     }
@@ -85,6 +87,24 @@ public class LibraryTest {
 
     @Test
     public void checkoutBook_shouldSetUserAsCurrentHolder() throws Exception {
-       // library.checkoutBook();
+        library.checkoutBook("1984", user);
+
+        assertEquals(user, library.searchBookByName("1984").getCurrentHolder());
+    }
+
+    @Test
+    public void checkinBook_shouldChangeBookHolderToNull() throws Exception {
+        library.checkoutBook("1984", user);
+        library.checkinBook("1984", user);
+
+        assertEquals(null, library.searchBookByName("1984").getCurrentHolder());
+    }
+
+    @Test
+    public void checkinBook_shouldOnlyWorkIfCurrentUserIsTheSameReturningBook() throws Exception {
+        library.checkoutBook("1984", user);
+        library.checkinBook("1984", new User(null, null, null, null, null));
+
+        assertEquals(user, library.searchBookByName("1984").getCurrentHolder());
     }
 }

@@ -36,16 +36,22 @@ public class Library {
     }
 
 
-    public void checkinBook(String bookName) {
+    public void checkinBook(String bookName, User user) {
         Book book = searchBookByName(bookName);
-        unavailableBooks.remove(book);
-        availableBooks.add(book);
+        if (book.getCurrentHolder().equals(user)) {
+            unavailableBooks.remove(book);
+            availableBooks.add(book);
+            book.returnBook();
+        } else {
+            System.out.println("You're not the current holder of this book, try another one");
+        }
     }
 
-    public void checkoutBook(String name) {
+    public void checkoutBook(String name, User user) {
         Book book = searchBookByName(name);
         availableBooks.remove(book);
         unavailableBooks.add(book);
+        book.checkoutBook(user);
 
     }
 

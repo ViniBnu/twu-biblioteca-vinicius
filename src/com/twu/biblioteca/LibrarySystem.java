@@ -3,9 +3,6 @@ package com.twu.biblioteca;
 import java.util.List;
 import java.util.Scanner;
 
-/**
- * Created by vsolive on 30/03/17.
- */
 public class LibrarySystem {
 
     private Library library;
@@ -21,9 +18,11 @@ public class LibrarySystem {
 
     public void run() {
         System.out.println("Welcome to Biblioteca!");
+
         do {
             performLogin();
         } while(!performLogin());
+
         String choice;
         do {
             choice = promptMenuAction();
@@ -83,17 +82,13 @@ public class LibrarySystem {
         }
     }
 
-    private void showAvailableMovieDetails() {
-        library.getAvailableMovies().forEach(System.out::println);
-    }
-
     private void promptForBookCheckin() {
         System.out.println("This is the list of books not available, which one would you like to return?");
         showUnavailableBookDetails();
         String bookName;
         bookName = scanner.nextLine();
         if (library.canChangeStatus(bookName, library.getAvailableBooks())) {
-            library.checkinBook(bookName);
+            library.checkinBook(bookName, currentUser);
             System.out.println("Thank you for returning the book");
         } else {
             System.out.println("That book is not due");
@@ -106,7 +101,7 @@ public class LibrarySystem {
         String bookName;
         bookName = scanner.nextLine();
         if (library.canChangeStatus(bookName, library.getUnavailableBooks())) {
-            library.checkoutBook(bookName);
+            library.checkoutBook(bookName, currentUser);
             System.out.println("Thank you, hope you enjoy your book");
         } else {
             System.out.println("That book is unavailable");
@@ -130,5 +125,9 @@ public class LibrarySystem {
 
     private void showUnavailableBookDetails() {
         library.getUnavailableBooks().forEach(System.out::println);
+    }
+
+    private void showAvailableMovieDetails() {
+        library.getAvailableMovies().forEach(System.out::println);
     }
 }
