@@ -16,7 +16,7 @@ public class BibliotecaApp {
         List<Movie> movies = new ArrayList<>();
         movies.add(new Movie("Rocky", "Avildsen", 1979, 10));
 
-        Library library = new Library(availableBooks, new ArrayList<>(), movies);
+        Library library = new Library(availableBooks, movies);
         List<User> users = new ArrayList<>();
         users.add(new User("vini", "vini.bnu@gmail.com", "99581533", "444-4444", "1234"));
         LibrarySystem system = new LibrarySystem(library, users);

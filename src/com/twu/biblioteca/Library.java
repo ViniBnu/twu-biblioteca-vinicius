@@ -5,13 +5,11 @@ import java.util.stream.Collectors;
 
 public class Library {
 
-    private List<Book> availableBooks;
-    private List<Book> unavailableBooks;
+    private List<Book> books;
     private List<Movie> availableMovies;
 
-    public Library(List<Book> availableBooks, List<Book> unavailableBooks, List<Movie> movies) {
-        this.availableBooks = availableBooks;
-        this.unavailableBooks = unavailableBooks;
+    public Library(List<Book> books, List<Movie> movies) {
+        this.books = books;
         this.availableMovies = movies;
     }
 
@@ -20,11 +18,11 @@ public class Library {
     }
 
     public List<Book> getAvailableBooks() {
-        return availableBooks;
+        return new ArrayList<>(books.stream().filter(b -> b.isAvailable()).collect(Collectors.toList()));
     }
 
     public List<Book> getUnavailableBooks() {
-        return unavailableBooks;
+        return new ArrayList<>(books.stream().filter(b -> !b.isAvailable()).collect(Collectors.toList()));
     }
 
     public boolean canChangeStatus(String bookName, List<Book> list) {
@@ -39,9 +37,7 @@ public class Library {
     public void checkinBook(String bookName, User user) {
         Book book = searchBookByName(bookName);
         if (book.getCurrentHolder().equals(user)) {
-            unavailableBooks.remove(book);
-            availableBooks.add(book);
-            book.returnBook();
+            book.returnItem(user);
         } else {
             System.out.println("You're not the current holder of this book, try another one");
         }
@@ -49,9 +45,7 @@ public class Library {
 
     public void checkoutBook(String name, User user) {
         Book book = searchBookByName(name);
-        availableBooks.remove(book);
-        unavailableBooks.add(book);
-        book.checkoutBook(user);
+        book.checkoutItem(user);
 
     }
 
@@ -67,9 +61,6 @@ public class Library {
     }
 
     private List<Book> getAllBooks() {
-        List <Book> books = new ArrayList<Book>();
-        books.addAll(availableBooks);
-        books.addAll(unavailableBooks);
         return books;
     }
 
@@ -92,4 +83,11 @@ public class Library {
         }
         return movie;
     }
+
+//    public LibraryItem searchItemBy(String itemName, List<LibraryItem> list) {
+//        LibraryItem item = null;
+//        for (LibraryItem li : list) {
+//            if (li.equals())
+//        }
+//    }
 }

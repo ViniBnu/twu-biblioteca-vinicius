@@ -27,7 +27,7 @@ public class LibraryTest {
         movies.add(new Movie("Rocky", "Avildsen", 1979, 10));
         user = new User("vini","vini.bnu@gmail.com","99581533","444-4444","1234");
 
-        library = new Library(availableBooks, new ArrayList<>(), movies);
+        library = new Library(availableBooks, movies);
 
     }
 

@@ -5,7 +5,7 @@ package com.twu.biblioteca;
 /**
  * Created by vsolive on 28/03/17.
  */
-public class Book {
+public class Book implements LibraryItem{
     private String name;
     private String author;
     private Integer releaseYear;
@@ -60,12 +60,25 @@ public class Book {
         return currentHolder;
     }
 
-    public void returnBook() {
-        this.currentHolder = null;
-    }
-    public void checkoutBook(User user) {
-        this.currentHolder = user;
+
+    @Override
+    public void checkoutItem(User user) {
+        if (isAvailable()) {
+            this.currentHolder = user;
+        }
     }
 
+    @Override
+    public void returnItem(User user) {
+        if (currentHolder.equals(user)) {
+            this.currentHolder = null;
+        } else {
+            System.out.println("You're not the current holder");
+        }
+    }
 
+    @Override
+    public boolean isAvailable() {
+        return currentHolder == null;
+    }
 }

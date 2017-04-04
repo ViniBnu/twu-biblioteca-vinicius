@@ -108,6 +108,19 @@ public class LibrarySystem {
         }
     }
 
+    private void promptForBookCheckout(String action) {
+        System.out.println("This is the list of itens for " + action + " type you choice");
+        showAvailableBookDetails();
+        String bookName;
+        bookName = scanner.nextLine();
+        if (library.getAvailableBooks().contains(new Book(bookName, null, null))) {
+            library.checkoutBook(bookName, currentUser);
+            System.out.println("Thank you, hope you enjoy your book");
+        } else {
+            System.out.println("That book is unavailable");
+        }
+    }
+
     private String promptMenuAction() {
         System.out.println("Choose one of the options bellow:");
         System.out.println("List Books");
