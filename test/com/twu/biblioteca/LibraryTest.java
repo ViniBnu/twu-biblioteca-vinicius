@@ -24,6 +24,7 @@ public class LibraryTest {
         availableBooks.add( new Book("Hobbit", "Tolkien", 1949));
         List<Movie> movies = new ArrayList<>();
         movies.add(new Movie("Rocky", "Avildsen", 1979, 10));
+
         library = new Library(availableBooks, new ArrayList<>(), movies);
 
     }
@@ -80,5 +81,10 @@ public class LibraryTest {
         library.checkoutMovie("Rocky");
 
         assertEquals(0, library.getAvailableMovies().size());
+    }
+
+    @Test
+    public void checkoutBook_shouldSetUserAsCurrentHolder() throws Exception {
+       // library.checkoutBook();
     }
 }

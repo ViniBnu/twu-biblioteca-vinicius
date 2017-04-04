@@ -46,6 +46,7 @@ public class Library {
         Book book = searchBookByName(name);
         availableBooks.remove(book);
         unavailableBooks.add(book);
+
     }
 
     public Book searchBookByName(String bookName) {

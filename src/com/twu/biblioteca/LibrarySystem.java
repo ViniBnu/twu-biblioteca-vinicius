@@ -1,5 +1,6 @@
 package com.twu.biblioteca;
 
+import java.util.List;
 import java.util.Scanner;
 
 /**
@@ -9,14 +10,20 @@ public class LibrarySystem {
 
     private Library library;
     private Scanner scanner;
+    private List<User> userList;
+    private User currentUser;
 
-    public LibrarySystem(Library library) {
+    public LibrarySystem(Library library, List<User> users) {
         this.library = library;
         scanner = new Scanner(System.in);
+        this.userList = users;
     }
 
     public void run() {
         System.out.println("Welcome to Biblioteca!");
+        do {
+            performLogin();
+        } while(!performLogin());
         String choice;
         do {
             choice = promptMenuAction();
@@ -37,12 +44,30 @@ public class LibrarySystem {
                 case "check out movie":
                     promptForMovieCheckout();
                     break;
+                case "user info":
+                    System.out.println(currentUser);
+                    break;
                 default:
                     System.out.println("Couldn't understand that, help me help you");
             }
 
         } while (!choice.equals("quit"));
 
+    }
+
+    private boolean performLogin() {
+        System.out.println("Enter your library number");
+        String numer = scanner.nextLine();
+        System.out.println("Enter your password");
+        String password = scanner.nextLine();
+
+        for(User user : userList) {
+            if (user.getLibraryNumber().equals(numer.toLowerCase()) && user.getPassword().equals(password.toLowerCase())) {
+                currentUser = user;
+                return true;
+            }
+        }
+        return false;
     }
 
     private void promptForMovieCheckout() {
@@ -94,6 +119,7 @@ public class LibrarySystem {
         System.out.println("Checkout Book");
         System.out.println("Check in Book");
         System.out.println("Check out Movie");
+        System.out.println("User information");
         System.out.println("Quit");
         return scanner.nextLine().toLowerCase().trim();
     }
