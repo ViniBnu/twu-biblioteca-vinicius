@@ -18,10 +18,10 @@ public class LibrarySystem {
 
     public void run() {
         System.out.println("Welcome to Biblioteca!");
-
+        boolean loggedIn = false;
         do {
-            performLogin();
-        } while(!performLogin());
+           loggedIn =  performLogin();
+        } while(!loggedIn);
 
         String choice;
         do {
@@ -35,15 +35,21 @@ public class LibrarySystem {
                     System.out.println("Thanks for acessing Biblioteca, come again");
                     break;
                 case "check out book":
-                    promptForBookCheckout();
+                    System.out.println("This is the list of books available, type in the name of the book you wish to checkout");
+                    showAvailableBookDetails();
+                    promptForItemCheckout();
                     break;
                 case "check in book":
-                    promptForBookCheckin();
+                    System.out.println("This is the list of books not available, which one would you like to return?");
+                    showUnavailableBookDetails();
+                    promptForItemCheckin();
                     break;
                 case "check out movie":
-                    promptForMovieCheckout();
+                    System.out.println("This is the list of available Movies, choose one of them to take home");
+                    showAvailableMovieDetails();
+                    promptForItemCheckout();
                     break;
-                case "user info":
+                case "user information":
                     System.out.println(currentUser);
                     break;
                 default:
@@ -61,7 +67,7 @@ public class LibrarySystem {
         String password = scanner.nextLine();
 
         for(User user : userList) {
-            if (user.getLibraryNumber().equals(numer.toLowerCase()) && user.getPassword().equals(password.toLowerCase())) {
+            if (user.getLibraryNumber().equals(numer) && user.getPassword().equals(password)) {
                 currentUser = user;
                 return true;
             }
@@ -69,62 +75,22 @@ public class LibrarySystem {
         return false;
     }
 
-    private void promptForMovieCheckout() {
-        System.out.println("This is the list of available Movies, choose one of them to take home");
-        showAvailableMovieDetails();
-        String movieName;
-        movieName = scanner.nextLine();
-        if(library.getAvailableMovies().contains(new Movie(movieName,null,null,null))) {
-            library.checkoutMovie(movieName);
-            System.out.println("Enjoy your movie");
-        } else {
-            System.out.println("Movie not found or not available");
-        }
+    private void promptForItemCheckin() {
+        LibraryItem book = library.searchItemByName(scanner.nextLine());
+        String successOrFailureMessage = library.checkinItem(book, currentUser);
+        System.out.println(successOrFailureMessage);
     }
 
-    private void promptForBookCheckin() {
-        System.out.println("This is the list of books not available, which one would you like to return?");
-        showUnavailableBookDetails();
-        String bookName;
-        bookName = scanner.nextLine();
-        if (library.canChangeStatus(bookName, library.getAvailableBooks())) {
-            library.checkinBook(bookName, currentUser);
-            System.out.println("Thank you for returning the book");
-        } else {
-            System.out.println("That book is not due");
-        }
-    }
-
-    private void promptForBookCheckout() {
-        System.out.println("This is the list of books available, type in the name of the book you wish to checkout");
-        showAvailableBookDetails();
-        String bookName;
-        bookName = scanner.nextLine();
-        if (library.canChangeStatus(bookName, library.getUnavailableBooks())) {
-            library.checkoutBook(bookName, currentUser);
-            System.out.println("Thank you, hope you enjoy your book");
-        } else {
-            System.out.println("That book is unavailable");
-        }
-    }
-
-    private void promptForBookCheckout(String action) {
-        System.out.println("This is the list of itens for " + action + " type you choice");
-        showAvailableBookDetails();
-        String bookName;
-        bookName = scanner.nextLine();
-        if (library.getAvailableBooks().contains(new Book(bookName, null, null))) {
-            library.checkoutBook(bookName, currentUser);
-            System.out.println("Thank you, hope you enjoy your book");
-        } else {
-            System.out.println("That book is unavailable");
-        }
+    private void promptForItemCheckout() {
+        LibraryItem book = library.searchItemByName(scanner.nextLine());
+        String successOrFailureMessage = library.checkoutItem(book, currentUser);
+        System.out.println(successOrFailureMessage);
     }
 
     private String promptMenuAction() {
         System.out.println("Choose one of the options bellow:");
         System.out.println("List Books");
-        System.out.println("Checkout Book");
+        System.out.println("Check out Book");
         System.out.println("Check in Book");
         System.out.println("Check out Movie");
         System.out.println("User information");
@@ -141,6 +107,6 @@ public class LibrarySystem {
     }
 
     private void showAvailableMovieDetails() {
-        library.getAvailableMovies().forEach(System.out::println);
+        library.getMovies().forEach(System.out::println);
     }
 }

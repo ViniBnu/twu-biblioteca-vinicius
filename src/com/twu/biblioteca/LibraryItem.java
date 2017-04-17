@@ -8,6 +8,8 @@ public interface LibraryItem {
     void checkoutItem(User user);
     void returnItem(User user);
     boolean isAvailable();
+    User getCurrentHolder();
+    String getName();
 
 
 }

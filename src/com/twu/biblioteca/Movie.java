@@ -1,8 +1,5 @@
 package com.twu.biblioteca;
 
-/**
- * Created by vsolive on 03/04/17.
- */
 public class Movie implements LibraryItem {
     private String name;
     private String director;
@@ -26,22 +23,6 @@ public class Movie implements LibraryItem {
                 ", rating " + rating;
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public String getDirector() {
-        return director;
-    }
-
-    public Integer getYear() {
-        return year;
-    }
-
-    public Integer getRating() {
-        return rating;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -49,12 +30,12 @@ public class Movie implements LibraryItem {
 
         Movie movie = (Movie) o;
 
-        return getName() != null ? getName().equals(movie.getName()) : movie.getName() == null;
+        return name != null ? name.equals(movie.name) : movie.name == null;
     }
 
     @Override
     public int hashCode() {
-        return getName() != null ? getName().hashCode() : 0;
+        return name != null ? name.hashCode() : 0;
     }
 
     @Override
@@ -76,5 +57,15 @@ public class Movie implements LibraryItem {
     @Override
     public boolean isAvailable() {
         return currentHolder == null;
+    }
+
+    @Override
+    public User getCurrentHolder() {
+        return this.currentHolder;
+    }
+
+    @Override
+    public String getName() {
+        return name;
     }
 }

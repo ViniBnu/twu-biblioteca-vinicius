@@ -6,9 +6,9 @@ package com.twu.biblioteca;
  * Created by vsolive on 28/03/17.
  */
 public class Book implements LibraryItem{
-    private String name;
-    private String author;
-    private Integer releaseYear;
+    private final String name;
+    private final String author;
+    private final Integer releaseYear;
     private User currentHolder;
 
     public Book(String name, String author, Integer releaseYear) {
@@ -28,18 +28,6 @@ public class Book implements LibraryItem{
                 ;
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public String getAuthor() {
-        return author;
-    }
-
-    public Integer getReleaseYear() {
-        return releaseYear;
-    }
-
 
     @Override
     public boolean equals(Object o) {
@@ -55,9 +43,14 @@ public class Book implements LibraryItem{
     public int hashCode() {
         return name.hashCode();
     }
-
+    @Override
     public User getCurrentHolder() {
         return currentHolder;
+    }
+
+    @Override
+    public String getName() {
+        return name;
     }
 
 

@@ -5,89 +5,65 @@ import java.util.stream.Collectors;
 
 public class Library {
 
-    private List<Book> books;
-    private List<Movie> availableMovies;
+    private List<LibraryItem> books;
+    private List<LibraryItem> movies;
 
-    public Library(List<Book> books, List<Movie> movies) {
+    public Library(List<LibraryItem> books, List<LibraryItem> movies) {
         this.books = books;
-        this.availableMovies = movies;
+        this.movies = movies;
     }
 
     public String getWelcomeMessage() {
         return "Welcome to Biblioteca!";
     }
 
-    public List<Book> getAvailableBooks() {
-        return new ArrayList<>(books.stream().filter(b -> b.isAvailable()).collect(Collectors.toList()));
+    public LibraryItem searchItemByName(String itemName) {
+        for (LibraryItem m : getAllItens() ) {
+            if (m.getName().equals(itemName)) {
+                return m;
+            }
+        }
+        return null;
     }
 
-    public List<Book> getUnavailableBooks() {
+    public String checkinItem(LibraryItem book, User user) {
+        if (book.getCurrentHolder().equals(user)) {
+            book.returnItem(user);
+            return "Thanks for returning your item";
+        } else {
+            return "You can`t return this book, try another one";
+        }
+    }
+
+    public String checkoutItem(LibraryItem item, User user) {
+        if (item != null && item.isAvailable()) {
+            item.checkoutItem(user);
+            return "Enjoy your book";
+        } else {
+            return "Book not found";
+        }
+    }
+
+    public List<LibraryItem> getAllItens() {
+        List<LibraryItem> list = new ArrayList<>();
+        list.addAll(books);
+        list.addAll(movies);
+        return list;
+    }
+
+    public List<LibraryItem> getMovies() {
+        return movies;
+    }
+    public List<LibraryItem> getAvailableMovies() {
+        return new ArrayList<LibraryItem>(movies.stream().filter(LibraryItem::isAvailable).collect(Collectors.toList()));
+    }
+
+    public List<LibraryItem> getAvailableBooks() {
+        return new ArrayList<>(books.stream().filter(LibraryItem::isAvailable &&).collect(Collectors.toList()));
+    }
+
+    public List<LibraryItem> getUnavailableBooks() {
         return new ArrayList<>(books.stream().filter(b -> !b.isAvailable()).collect(Collectors.toList()));
     }
 
-    public boolean canChangeStatus(String bookName, List<Book> list) {
-        Book book = searchBookByName(bookName);
-        if (book == null || list.contains(book)) {
-            return false;
-        }
-        return true;
-    }
-
-
-    public void checkinBook(String bookName, User user) {
-        Book book = searchBookByName(bookName);
-        if (book.getCurrentHolder().equals(user)) {
-            book.returnItem(user);
-        } else {
-            System.out.println("You're not the current holder of this book, try another one");
-        }
-    }
-
-    public void checkoutBook(String name, User user) {
-        Book book = searchBookByName(name);
-        book.checkoutItem(user);
-
-    }
-
-    public Book searchBookByName(String bookName) {
-        Book book = null;
-        for(Book b : getAllBooks()) {
-            if (b.getName().toLowerCase().equals(bookName.toLowerCase())) {
-                book = b;
-                break;
-            }
-        }
-        return book;
-    }
-
-    private List<Book> getAllBooks() {
-        return books;
-    }
-
-    public List<Movie> getAvailableMovies() {
-        return availableMovies;
-    }
-
-    public void checkoutMovie(String movieName) {
-        Movie movie = searchMovieByName(movieName);
-        availableMovies.remove(movie);
-    }
-
-    private Movie searchMovieByName(String movieName) {
-        Movie movie = null;
-        for (Movie m : getAvailableMovies()) {
-            if (m.getName().equals(movieName)) {
-                movie = m;
-                break;
-            }
-        }
-        return movie;
-    }
-
-//    public LibraryItem searchItemBy(String itemName, List<LibraryItem> list) {
-//        LibraryItem item = null;
-//        for (LibraryItem li : list) {
-//            if (li.equals())
-//        }
-//    }
 }
