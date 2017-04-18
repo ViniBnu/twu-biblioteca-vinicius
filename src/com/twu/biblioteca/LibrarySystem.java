@@ -37,17 +37,17 @@ public class LibrarySystem {
                 case "check out book":
                     System.out.println("This is the list of books available, type in the name of the book you wish to checkout");
                     showAvailableBookDetails();
-                    promptForItemCheckout();
+                    promptForItemCheckout(ItemType.BOOK);
                     break;
                 case "check in book":
                     System.out.println("This is the list of books not available, which one would you like to return?");
                     showUnavailableBookDetails();
-                    promptForItemCheckin();
+                    promptForItemCheckin(ItemType.BOOK);
                     break;
                 case "check out movie":
                     System.out.println("This is the list of available Movies, choose one of them to take home");
                     showAvailableMovieDetails();
-                    promptForItemCheckout();
+                    promptForItemCheckout(ItemType.MOVIE);
                     break;
                 case "user information":
                     System.out.println(currentUser);
@@ -75,14 +75,14 @@ public class LibrarySystem {
         return false;
     }
 
-    private void promptForItemCheckin() {
-        LibraryItem book = library.searchItemByName(scanner.nextLine());
+    private void promptForItemCheckin(ItemType itemType) {
+        LibraryItem book = library.searchItemByName(scanner.nextLine(), itemType);
         String successOrFailureMessage = library.checkinItem(book, currentUser);
         System.out.println(successOrFailureMessage);
     }
 
-    private void promptForItemCheckout() {
-        LibraryItem book = library.searchItemByName(scanner.nextLine());
+    private void promptForItemCheckout(ItemType itemType) {
+        LibraryItem book = library.searchItemByName(scanner.nextLine(), itemType);
         String successOrFailureMessage = library.checkoutItem(book, currentUser);
         System.out.println(successOrFailureMessage);
     }
@@ -107,6 +107,6 @@ public class LibrarySystem {
     }
 
     private void showAvailableMovieDetails() {
-        library.getMovies().forEach(System.out::println);
+        library.getAvailableMovies().forEach(System.out::println);
     }
 }

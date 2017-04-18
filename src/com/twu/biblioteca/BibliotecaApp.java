@@ -10,19 +10,15 @@ public class BibliotecaApp {
 
     public static void main(String[] args) {
 
-        List<LibraryItem> availableBooks = new ArrayList<>();
-        availableBooks.add(new Book("1984", "Orwell", 1949));
-        availableBooks.add( new Book("Hobbit", "Tolkien", 1949));
-        List<LibraryItem> movies = new ArrayList<>();
-        movies.add(new Movie("Rocky", "Avildsen", 1979, 10));
+        List<LibraryItem> items = new ArrayList<>();
+        items.add(new LibraryItem("1984", "Orwell", 1949, ItemType.BOOK));
+        items.add( new LibraryItem("Hobbit", "Tolkien", 1949, ItemType.BOOK));
+        items.add(new LibraryItem("Rocky", "Avildsen", 1979, 10, ItemType.MOVIE));
 
-        Library library = new Library(availableBooks, movies);
+        Library library = new Library(items);
         List<User> users = new ArrayList<>();
         users.add(new User("vini", "vini.bnu@gmail.com", "99581533", "444-4444", "1234"));
         LibrarySystem system = new LibrarySystem(library, users);
-
-
-
 
         system.run();
 

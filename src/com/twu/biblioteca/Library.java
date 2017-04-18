@@ -1,25 +1,25 @@
 package com.twu.biblioteca;
 
+import sun.rmi.rmic.iiop.Type;
+
 import java.util.*;
 import java.util.stream.Collectors;
 
 public class Library {
 
-    private List<LibraryItem> books;
-    private List<LibraryItem> movies;
+    private List<LibraryItem> items;
 
-    public Library(List<LibraryItem> books, List<LibraryItem> movies) {
-        this.books = books;
-        this.movies = movies;
+    public Library(List<LibraryItem> items) {
+        this.items = items;
     }
 
     public String getWelcomeMessage() {
         return "Welcome to Biblioteca!";
     }
 
-    public LibraryItem searchItemByName(String itemName) {
+    public LibraryItem searchItemByName(String itemName, ItemType itemType) {
         for (LibraryItem m : getAllItens() ) {
-            if (m.getName().equals(itemName)) {
+            if (m.getName().equals(itemName) && m.getType() == itemType) {
                 return m;
             }
         }
@@ -31,39 +31,33 @@ public class Library {
             book.returnItem(user);
             return "Thanks for returning your item";
         } else {
-            return "You can`t return this book, try another one";
+            return "You can`t return this item, try another one";
         }
     }
 
     public String checkoutItem(LibraryItem item, User user) {
         if (item != null && item.isAvailable()) {
             item.checkoutItem(user);
-            return "Enjoy your book";
+            return "Enjoy your item";
         } else {
-            return "Book not found";
+            return "Item not found";
         }
     }
+    
 
     public List<LibraryItem> getAllItens() {
-        List<LibraryItem> list = new ArrayList<>();
-        list.addAll(books);
-        list.addAll(movies);
-        return list;
-    }
-
-    public List<LibraryItem> getMovies() {
-        return movies;
+        return new ArrayList<>(items);
     }
     public List<LibraryItem> getAvailableMovies() {
-        return new ArrayList<LibraryItem>(movies.stream().filter(LibraryItem::isAvailable).collect(Collectors.toList()));
+        return new ArrayList<>(items.stream().filter(li -> li.isAvailable() && li.getType() == ItemType.MOVIE).collect(Collectors.toList()));
     }
 
     public List<LibraryItem> getAvailableBooks() {
-        return new ArrayList<>(books.stream().filter(LibraryItem::isAvailable &&).collect(Collectors.toList()));
+        return new ArrayList<>(items.stream().filter(LI -> LI.isAvailable() && LI.getType() == ItemType.BOOK).collect(Collectors.toList()));
     }
 
     public List<LibraryItem> getUnavailableBooks() {
-        return new ArrayList<>(books.stream().filter(b -> !b.isAvailable()).collect(Collectors.toList()));
+        return new ArrayList<>(items.stream().filter(b -> !b.isAvailable() && b.getType() == ItemType.BOOK).collect(Collectors.toList()));
     }
 
 }

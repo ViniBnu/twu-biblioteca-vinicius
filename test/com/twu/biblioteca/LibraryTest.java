@@ -19,79 +19,78 @@ public class LibraryTest {
 
     @Before
     public void setUp() throws Exception {
-        List<LibraryItem> availableBooks = new ArrayList<>();
-        availableBooks.add(new Book("1984", "Orwell", 1949));
-        availableBooks.add( new Book("Hobbit", "Tolkien", 1949));
-        List<LibraryItem> movies = new ArrayList<>();
-        movies.add(new Movie("Rocky", "Avildsen", 1979, 10));
+        List<LibraryItem> items = new ArrayList<>();
+        items.add(new LibraryItem("1984", "Orwell", 1949, ItemType.BOOK));
+        items.add( new LibraryItem("Hobbit", "Tolkien", 1949, ItemType.BOOK));
+        items.add(new LibraryItem("Rocky", "Avildsen", 1979, 10, ItemType.MOVIE));
         user = new User("vini","vini.bnu@gmail.com","99581533","444-4444","1234");
 
-        library = new Library(availableBooks, movies);
+        library = new Library(items);
 
     }
 
     @Test
     public void checkoutBook_shouldTakeBookOffAvailableBooks() throws Exception {
-        library.checkoutItem(library.searchItemByName("1984"), user);
+        library.checkoutItem(library.searchItemByName("1984", ItemType.BOOK), user);
 
         assertEquals(1, library.getAvailableBooks().size());
     }
 
     @Test
     public void checkinBook_shouldPutReturnedBookBackToAvailableList() throws Exception {
-        library.checkoutItem(library.searchItemByName("1984"),user);
-        library.checkinItem(library.searchItemByName("1984"),user);
+        library.checkoutItem(library.searchItemByName("1984", ItemType.BOOK),user);
+        library.checkinItem(library.searchItemByName("1984", ItemType.BOOK),user);
 
         assertEquals(0, library.getUnavailableBooks().size());
     }
 
     @Test
     public void searchBookByName_shouldReturnRightBook() throws Exception {
-        LibraryItem book = library.searchItemByName("1984");
+        LibraryItem book = library.searchItemByName("1984", ItemType.BOOK);
 
         assertEquals(book, library.getAvailableBooks().get(0));
     }
 
     @Test
     public void searchBookByName_returnsBookEvenIfUnavailable() throws Exception {
-        library.checkoutItem(library.searchItemByName("1984"),user);
-        LibraryItem book = library.searchItemByName("1984");
+        library.checkoutItem(library.searchItemByName("1984", ItemType.BOOK),user);
+        LibraryItem book = library.searchItemByName("1984", ItemType.BOOK);
 
         assertEquals(book,library.getUnavailableBooks().get(0));
     }
 
     @Test
     public void getAvailableMovies_shouldReturnListOfAvailableMovies() throws Exception {
-        assertEquals(1, library.getMovies().size());
+        assertEquals(1, library.getAvailableMovies().size());
     }
 
     @Test
     public void checkoutMovie_shouldTakeMovieOutOfAvailableList() throws Exception {
-        library.checkoutItem(library.searchItemByName("Rocky"), user);
+        library.checkoutItem(library.searchItemByName("Rocky", ItemType.MOVIE), user);
 
         assertEquals(0, library.getAvailableMovies().size());
     }
 
     @Test
     public void checkoutBook_shouldSetUserAsCurrentHolder() throws Exception {
-        library.checkoutItem(library.searchItemByName("1984"), user);
+        library.checkoutItem(library.searchItemByName("1984", ItemType.BOOK), user);
 
-        assertEquals(user, library.searchItemByName("1984").getCurrentHolder());
+        assertEquals(user, library.searchItemByName("1984", ItemType.BOOK).getCurrentHolder());
     }
 
     @Test
     public void checkinBook_shouldChangeBookHolderToNull() throws Exception {
-        library.checkoutItem(library.searchItemByName("1984"), user);
-        library.checkinItem(library.searchItemByName("1984"), user);
+        library.checkoutItem(library.searchItemByName("1984", ItemType.BOOK), user);
+        library.checkinItem(library.searchItemByName("1984", ItemType.BOOK), user);
 
-        assertEquals(null, library.searchItemByName("1984").getCurrentHolder());
+        assertEquals(null, library.searchItemByName("1984", ItemType.BOOK).getCurrentHolder());
     }
 
     @Test
     public void checkinBook_shouldOnlyWorkIfCurrentUserIsTheSameReturningBook() throws Exception {
-        library.checkoutItem(library.searchItemByName("1984"), user);
-        library.checkinItem(library.searchItemByName("1984"), new User(null, null, null, null, null));
+        library.checkoutItem(library.searchItemByName("1984", ItemType.BOOK), user);
+        library.checkinItem(library.searchItemByName("1984", ItemType.BOOK), new User(null, null, null, null, null));
 
-        assertEquals(user, library.searchItemByName("1984").getCurrentHolder());
+        assertEquals(user, library.searchItemByName("1984", ItemType.BOOK).getCurrentHolder());
     }
 }
